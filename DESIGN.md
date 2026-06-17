@@ -42,7 +42,7 @@ behind one port with two adapters.
 ## Architecture (clean architecture / DDD layering)
 
 ```
-src/gadata/
+gadata/
   domain/                # no I/O, no HTTP, no geopandas-IO — pure model
     borehole.py          # Borehole entity, BoreholeCollection aggregate
     stratigraphy.py      # StratigraphyInterval, EarthMaterialInterval value objects
@@ -159,7 +159,7 @@ fights the hash-named provenance store you want and models a different concept
 `arcgis`/`restapi` — heavyweight, and we only need two narrow request shapes;
 plain requests + geopandas is leaner and fully under our control.
 
-## Verified facts (probed live 2026-06-17, see scripts/probe_ga_services.py)
+## Verified facts (probed live 2026-06-17; re-verified by tests/test_ga_server_live.py)
 
 Dataset sizes (national totals) — **pagination is mandatory, never optional**:
 - `gsmlp:BoreholeView` headers: **52,338**

@@ -59,7 +59,8 @@ Repository = "https://github.com/g-adopt/gadata"
 Issues = "https://github.com/g-adopt/gadata/issues"
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
+include = ["gadata*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
