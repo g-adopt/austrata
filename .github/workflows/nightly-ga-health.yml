@@ -1,0 +1,65 @@
+name: Nightly GA server health
+
+on:
+  schedule:
+    # Nightly smoke at ~02:00 AEST (16:00 UTC) — off-peak for the GA servers.
+    - cron: '0 16 * * *'
+    # Weekly contract test, Sunday ~03:00 AEST (Saturday 17:00 UTC).
+    - cron: '0 17 * * 6'
+  workflow_dispatch:
+
+concurrency:
+  group: ga-health-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    name: Smoke health check (nightly)
+    # Runs on the nightly cron and on manual dispatch (not the weekly slot).
+    if: github.event.schedule == '0 16 * * *' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install gadata
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Run smoke health checks
+        run: |
+          set -o pipefail
+          python -m pytest -m "live and smoke" -q --tb=short | tee smoke-report.txt
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ga-smoke-report
+          path: smoke-report.txt
+
+  contract:
+    name: Contract test (weekly)
+    if: github.event.schedule == '0 17 * * 6'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install gadata
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Run contract checks
+        run: |
+          set -o pipefail
+          python -m pytest -m "live and contract" -q --tb=short | tee contract-report.txt
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ga-contract-report
+          path: contract-report.txt
