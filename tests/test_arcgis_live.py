@@ -7,8 +7,8 @@ coordinates land inside the Australian GDA94 lon/lat range (confirming
 """
 import pytest
 
-from gadata.domain.region import Region
-from gadata.infrastructure.arcgis_rest_client import ArcGisRestClient
+from austrata.domain.region import Region
+from austrata.infrastructure.arcgis_rest_client import ArcGisRestClient
 
 pytestmark = pytest.mark.live
 

@@ -16,7 +16,7 @@ from __future__ import annotations
 from collections import Counter
 from dataclasses import fields
 
-from gadata import GADataClient
+from austrata import GADataClient
 from lower_murrumbidgee_boreholes import build_regions
 
 

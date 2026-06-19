@@ -29,9 +29,9 @@ import geopandas as gpd
 import pandas as pd
 from shapely.geometry import Point
 
-from gadata.infrastructure.ngis_sources import get_source
+from austrata.infrastructure.ngis_sources import get_source
 
-logger = logging.getLogger("gadata.ngis")
+logger = logging.getLogger("austrata.ngis")
 
 #: Bump whenever this mapping/shape changes — it stamps the fast DB so a stale
 #: cache (built by an older optimiser) is detected and rebuilt.

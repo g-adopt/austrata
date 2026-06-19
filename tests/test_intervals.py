@@ -1,5 +1,5 @@
 """Pure/offline unit tests for the log interval value objects."""
-from gadata.domain.stratigraphy import EarthMaterialInterval, StratigraphyInterval
+from austrata.domain.stratigraphy import EarthMaterialInterval, StratigraphyInterval
 
 # Field names mirror the live bh:BoreholeStratigraphyLogs probe (UPPERCASE).
 STRAT_FEATURE = {

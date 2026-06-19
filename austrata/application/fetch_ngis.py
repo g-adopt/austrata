@@ -25,7 +25,7 @@ from typing import Callable, Dict, Optional
 
 import geopandas as gpd
 
-from gadata.ports.cache import DatasetCache
+from austrata.ports.cache import DatasetCache
 
 #: The four fast-DB layers, in optimise order.
 NGIS_LAYERS = ("bores", "stratigraphy", "earth_material", "construction")

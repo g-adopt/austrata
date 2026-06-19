@@ -20,20 +20,20 @@ from typing import Optional, Tuple
 
 from shapely.geometry.base import BaseGeometry
 
-from gadata.application import fetch_ngis as ngis_uc
-from gadata.domain.borehole import BoreholeCollection
-from gadata.domain.region import Region
-from gadata.infrastructure import ngis_download, ngis_optimiser
-from gadata.infrastructure.dataset_cache import DatasetCache
-from gadata.infrastructure.http import HttpClient
-from gadata.infrastructure.ngis_mapper import (
+from austrata.application import fetch_ngis as ngis_uc
+from austrata.domain.borehole import BoreholeCollection
+from austrata.domain.region import Region
+from austrata.infrastructure import ngis_download, ngis_optimiser
+from austrata.infrastructure.dataset_cache import DatasetCache
+from austrata.infrastructure.http import HttpClient
+from austrata.infrastructure.ngis_mapper import (
     ngis_bores_to_collection,
     ngis_construction,
     ngis_earth_material,
     ngis_stratigraphy,
 )
 
-logger = logging.getLogger("gadata.ngis")
+logger = logging.getLogger("austrata.ngis")
 
 BBox = Tuple[float, float, float, float]
 

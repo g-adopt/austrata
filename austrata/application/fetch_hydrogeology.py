@@ -9,9 +9,9 @@ from __future__ import annotations
 
 from typing import Optional, Protocol
 
-from gadata.domain.region import Region
-from gadata.infrastructure.dataset_cache import FetchPlan
-from gadata.infrastructure.feature_mapper import hydrogeology_features_to_gdf
+from austrata.domain.region import Region
+from austrata.infrastructure.dataset_cache import FetchPlan
+from austrata.infrastructure.feature_mapper import hydrogeology_features_to_gdf
 
 ARCGIS_SERVICE = "ga-hydrogeology-arcgis"
 ARCGIS_LAYER = "Hydrogeology_of_Australia/0"

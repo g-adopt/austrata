@@ -22,7 +22,7 @@ from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
 #: Base of our public DigitalOcean Spaces mirror (credential-free HTTPS GET).
-MIRROR_BASE = "https://gadopt.syd1.digitaloceanspaces.com/gadata/ngis"
+MIRROR_BASE = "https://gadopt.syd1.digitaloceanspaces.com/austrata/ngis"
 
 #: data.gov.au licence for all three cores (Creative Commons Attribution).
 NGIS_LICENSE = "CC BY 4.0"
@@ -137,7 +137,7 @@ def ngis_states_intersecting(region_or_bbox) -> List[str]:
     """State codes whose extent intersects ``region_or_bbox`` (edge-inclusive).
 
     Accepts a ``(min_lon, min_lat, max_lon, max_lat)`` tuple or anything exposing
-    a ``.bounds`` of that shape (a :class:`~gadata.domain.region.Region`). The
+    a ``.bounds`` of that shape (a :class:`~austrata.domain.region.Region`). The
     federated client uses this so a box only opens the gdbs it can actually cover.
     A state whose ``extent`` is ``None`` is treated as a possible match (kept).
     """

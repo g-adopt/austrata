@@ -1,8 +1,8 @@
 """Pure/offline unit tests for the Borehole entity and collection aggregate."""
 import pytest
 
-from gadata.domain.borehole import Borehole, BoreholeCollection
-from gadata.domain.region import Region
+from austrata.domain.borehole import Borehole, BoreholeCollection
+from austrata.domain.region import Region
 
 # Mirrors the live gsmlp:BoreholeView probe (lowercase keys, lowercase eno).
 HEADER_FEATURE = {
@@ -99,7 +99,7 @@ def test_collection_load_logs_not_implemented():
 
 # -- log-export GeoDataFrames -------------------------------------------
 
-from gadata.domain.stratigraphy import (  # noqa: E402
+from austrata.domain.stratigraphy import (  # noqa: E402
     EarthMaterialInterval,
     StratigraphyInterval,
 )
@@ -175,7 +175,7 @@ def test_stratigraphy_geodataframe_loaded_but_empty():
 
 # -- construction export (NGIS-only) ------------------------------------
 
-from gadata.domain.construction import ConstructionInterval  # noqa: E402
+from austrata.domain.construction import ConstructionInterval  # noqa: E402
 
 CONSTRUCTION_A = {"BOREHOLE_NAME": "GW1", "INTERVAL_BEGIN_M": 30,
                   "INTERVAL_END_M": 42, "CONSTRUCTION_TYPE": "Screen",

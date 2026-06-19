@@ -1,9 +1,9 @@
 """Offline tests for GADataClient with fake injected adapters + tmp cache."""
 import pytest
 
-from gadata.client import GADataClient
-from gadata.domain.borehole import BoreholeCollection
-from gadata.infrastructure.dataset_cache import DatasetCache
+from austrata.client import GADataClient
+from austrata.domain.borehole import BoreholeCollection
+from austrata.infrastructure.dataset_cache import DatasetCache
 
 ACT_BBOX = (148.9, -35.6, 149.3, -35.1)
 
@@ -218,7 +218,7 @@ def test_borehole_collection_provenance_and_citation(tmp_path):
 
 
 def test_hydrogeology_provenance_helpers(tmp_path):
-    from gadata.client import hydrogeology_citation, hydrogeology_provenance
+    from austrata.client import hydrogeology_citation, hydrogeology_provenance
     arc = FakeArcGis([_hydro(1)])
     ga = _client(tmp_path, arcgis=arc)
     gdf = ga.hydrogeology(bbox=ACT_BBOX)
@@ -230,8 +230,8 @@ def test_hydrogeology_provenance_helpers(tmp_path):
 
 
 def test_collection_built_outside_client_has_empty_provenance():
-    from gadata.domain.borehole import BoreholeCollection
-    from gadata.domain.region import Region
+    from austrata.domain.borehole import BoreholeCollection
+    from austrata.domain.region import Region
     coll = BoreholeCollection([], Region.from_bbox(*ACT_BBOX))
     assert coll.provenance() == {}
     assert "Geoscience Australia" in coll.citation()

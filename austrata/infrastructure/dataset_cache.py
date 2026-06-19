@@ -41,12 +41,12 @@ import geopandas as gpd
 from filelock import FileLock
 from platformdirs import user_cache_dir
 
-logger = logging.getLogger("gadata.cache")
+logger = logging.getLogger("austrata.cache")
 
 CACHE_FORMAT_VERSION = 1
 DEFAULT_MAX_AGE_SECONDS = 30 * 24 * 3600  # 30 days TTL backstop
 MANIFEST_NAME = "manifest.json"
-_ENV_DIR = "GADATA_DATA_DIR"
+_ENV_DIR = "AUSTRATA_DATA_DIR"
 
 
 class FreshnessStrategy(Protocol):
@@ -106,7 +106,7 @@ class DatasetCache:
         offline: bool = False,
         max_age: float = DEFAULT_MAX_AGE_SECONDS,
     ) -> None:
-        self.cache_dir = Path(cache_dir or os.environ.get(_ENV_DIR) or user_cache_dir("gadata"))
+        self.cache_dir = Path(cache_dir or os.environ.get(_ENV_DIR) or user_cache_dir("austrata"))
         self.offline = offline
         self.max_age = max_age
         self._manifest_path = self.cache_dir / MANIFEST_NAME

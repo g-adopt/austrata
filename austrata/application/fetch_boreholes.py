@@ -13,10 +13,10 @@ from __future__ import annotations
 
 from typing import Optional
 
-from gadata.domain.region import Region
-from gadata.infrastructure.dataset_cache import FetchPlan
-from gadata.infrastructure.feature_mapper import borehole_features_to_gdf
-from gadata.ports.data_source import BoreholeSource
+from austrata.domain.region import Region
+from austrata.infrastructure.dataset_cache import FetchPlan
+from austrata.infrastructure.feature_mapper import borehole_features_to_gdf
+from austrata.ports.data_source import BoreholeSource
 
 WFS_SERVICE = "ga-boreholes-wfs"
 WFS_LAYER = "gsmlp:BoreholeView"
@@ -87,7 +87,7 @@ def build_log_plan(source: BoreholeSource, kind: str, enos) -> FetchPlan:
     the TTL backstop; no cheap per-ENO fingerprint exists, so no fingerprint_fn
     is supplied (the cache then revalidates purely by max-age).
     """
-    from gadata.infrastructure.feature_mapper import log_features_to_dataframe
+    from austrata.infrastructure.feature_mapper import log_features_to_dataframe
 
     unique = sorted({int(e) for e in enos})
 

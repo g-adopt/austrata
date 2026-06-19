@@ -197,7 +197,7 @@ with fiona.open(GDB, layer="NGIS_BoreholeLog") as src:
 (clipped to a lon/lat box and grouped Shepparton/Calivil/Renmark) and can serve
 as a worked example of the output shape.
 
-## What the `gadata` normaliser maps (inclusive — nothing dropped)
+## What the `austrata` normaliser maps (inclusive — nothing dropped)
 
 The package normalises NGIS into the **same** domain objects as the GA WFS
 (`Borehole`, `StratigraphyInterval`, `EarthMaterialInterval`, plus an NGIS-only
@@ -314,7 +314,7 @@ exposed via `load_logs("construction")`.
 ## Download sources
 
 The package never hardcodes these in scattered places: the authoritative pinned
-copy lives in `gadata/infrastructure/ngis_sources.py`, which records for each
+copy lives in `austrata/infrastructure/ngis_sources.py`, which records for each
 state the data.gov.au resource URL, our S3 mirror, the expected zip size and md5,
 the `.gdb` path inside the archive, the vintage, and the state extent. The
 downloader (`ngis_download.ensure_gdb`) tries the data.gov.au resource first and
@@ -327,21 +327,21 @@ the URLs below are reproduced from it for convenience.
 
 - Landing page: https://data.gov.au/data/dataset/b0f37930-a810-4819-8fb6-8008538fa53b
 - Direct download (data.gov.au): https://data.gov.au/data/dataset/b0f37930-a810-4819-8fb6-8008538fa53b/resource/0cbae516-efef-4ab5-8685-b0570ac9ab4c/download/6c364d09-fc3b-47c3-aa98-6c702d3d8137.zip
-- S3 mirror (fallback): https://gadopt.syd1.digitaloceanspaces.com/gadata/ngis/nsw_ngis_core_v2pt3.zip
+- S3 mirror (fallback): https://gadopt.syd1.digitaloceanspaces.com/austrata/ngis/nsw_ngis_core_v2pt3.zip
 - md5: `8c5006f6e136eec8700464f8d1783373`
 
 ### Victoria (vintage 2014-03, zip 1,105,719,595 bytes)
 
 - Landing page: https://data.gov.au/data/dataset/2eb2630f-313e-4542-9137-c6d7d82171b0
 - Direct download (data.gov.au): https://data.gov.au/data/dataset/2eb2630f-313e-4542-9137-c6d7d82171b0/resource/54963b10-0515-43f5-a7ec-285f5fecacb9/download/fc6dbf39-d786-4412-b631-04695db4cc90.zip
-- S3 mirror (fallback): https://gadopt.syd1.digitaloceanspaces.com/gadata/ngis/vic_ngis_core_2014.zip
+- S3 mirror (fallback): https://gadopt.syd1.digitaloceanspaces.com/austrata/ngis/vic_ngis_core_2014.zip
 - md5: `1138ee6a47e3c37cef174c20b9f6c76f`
 
 ### Queensland (vintage 2014, zip 48,203,959 bytes)
 
 - Landing page: https://data.gov.au/data/dataset/d2c06543-7389-4ac2-86c0-74b077bcdaa5
 - Direct download (data.gov.au): https://data.gov.au/data/dataset/d2c06543-7389-4ac2-86c0-74b077bcdaa5/resource/02424659-834a-4a60-bc83-a1b4ddd23ee8/download/9f7573c0-e238-4a3c-a62b-a0326eaa9254.zip
-- S3 mirror (fallback): https://gadopt.syd1.digitaloceanspaces.com/gadata/ngis/qld_ngis_core.zip
+- S3 mirror (fallback): https://gadopt.syd1.digitaloceanspaces.com/austrata/ngis/qld_ngis_core.zip
 - md5: `0e3b845c35c8e37a867ee5f9e7132a32`
 
 All three are licensed CC BY 4.0. SA/WA/NT/TAS have no standalone core on

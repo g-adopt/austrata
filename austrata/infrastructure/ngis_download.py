@@ -2,14 +2,14 @@
 
 Turns a state code into a *trusted* local ``.gdb`` directory, honouring the
 remote↔local consistency contract: a downloaded archive is verified by size and
-md5 against :mod:`gadata.infrastructure.ngis_sources` before it is ever trusted,
+md5 against :mod:`austrata.infrastructure.ngis_sources` before it is ever trusted,
 and an unverified artifact is never returned.
 
 This module only *acquires* the raw geodatabase. Normalising it into the fast DB
 (the optimiser pass) is a separate stage. Behaviour:
 
-1. Resolve the NGIS data dir (arg > ``GADATA_NGIS_DIR`` env > platformdirs cache
-   ``gadata/ngis``). The package manages ``<ngis_dir>/<STATE>/...`` under it.
+1. Resolve the NGIS data dir (arg > ``AUSTRATA_NGIS_DIR`` env > platformdirs cache
+   ``austrata/ngis``). The package manages ``<ngis_dir>/<STATE>/...`` under it.
 2. **Local-first:** a usable ``.gdb`` already at the expected path is returned
    immediately — no network. ``offline`` + absent raises.
 3. Otherwise stream the zip to disk, ``resource_url`` (data.gov.au) first then
@@ -30,21 +30,21 @@ from typing import List, Optional, Tuple
 
 from platformdirs import user_cache_dir
 
-from gadata.infrastructure.http import HttpClient
-from gadata.infrastructure.ngis_sources import NgisSource, get_source
+from austrata.infrastructure.http import HttpClient
+from austrata.infrastructure.ngis_sources import NgisSource, get_source
 
-logger = logging.getLogger("gadata.ngis")
+logger = logging.getLogger("austrata.ngis")
 
 #: Env var overriding where raw NGIS geodatabases are stored/extracted.
-_ENV_DIR = "GADATA_NGIS_DIR"
+_ENV_DIR = "AUSTRATA_NGIS_DIR"
 
 #: Streaming read block size for download + checksum (1 MiB).
 _BLOCK = 1 << 20
 
 
 def resolve_ngis_dir(ngis_dir: Optional[os.PathLike | str] = None) -> Path:
-    """Resolve the NGIS data dir: arg > env > platformdirs cache ``gadata/ngis``."""
-    chosen = ngis_dir or os.environ.get(_ENV_DIR) or os.path.join(user_cache_dir("gadata"), "ngis")
+    """Resolve the NGIS data dir: arg > env > platformdirs cache ``austrata/ngis``."""
+    chosen = ngis_dir or os.environ.get(_ENV_DIR) or os.path.join(user_cache_dir("austrata"), "ngis")
     return Path(chosen)
 
 

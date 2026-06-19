@@ -10,9 +10,9 @@ import zipfile
 import pytest
 import responses
 
-from gadata.infrastructure import ngis_sources
-from gadata.infrastructure.http import HttpClient
-from gadata.infrastructure.ngis_download import ensure_gdb
+from austrata.infrastructure import ngis_sources
+from austrata.infrastructure.http import HttpClient
+from austrata.infrastructure.ngis_download import ensure_gdb
 
 GDB_RELPATH = "extract_dir/TEST_NGIS_Core.gdb"
 PRIMARY_URL = "https://data.gov.au/test/ngis-tas.zip"

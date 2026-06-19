@@ -34,8 +34,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional
 
-from gadata.domain.coercion import to_float as _to_float
-from gadata.domain.coercion import to_str as _to_str
+from austrata.domain.coercion import to_float as _to_float
+from austrata.domain.coercion import to_str as _to_str
 
 
 def _check_interval(top: Optional[float], bottom: Optional[float]) -> Optional[str]:

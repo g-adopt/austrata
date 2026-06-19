@@ -8,11 +8,11 @@ import fiona
 import pytest
 from fiona.crs import CRS
 
-from gadata.client import GADataClient
-from gadata.groundwater_client import GroundwaterClient
-from gadata.infrastructure import ngis_download, ngis_sources
-from gadata.infrastructure.ngis_sources import ngis_states_intersecting
-from gadata.ngis_client import NGISClient
+from austrata.client import GADataClient
+from austrata.groundwater_client import GroundwaterClient
+from austrata.infrastructure import ngis_download, ngis_sources
+from austrata.infrastructure.ngis_sources import ngis_states_intersecting
+from austrata.ngis_client import NGISClient
 
 _ALBERS = CRS.from_epsg(3577)
 # Box over the synthetic 'TAS' state's extent; GW1 + edge GW3 inside, GW2 out.

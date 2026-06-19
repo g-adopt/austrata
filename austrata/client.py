@@ -20,22 +20,22 @@ import geopandas as gpd
 from shapely.geometry import box
 from shapely.geometry.base import BaseGeometry
 
-from gadata.application import fetch_boreholes as bh_uc
-from gadata.application import fetch_hydrogeology as hy_uc
-from gadata.domain.borehole import Borehole, BoreholeCollection
-from gadata.domain.region import Region
-from gadata.infrastructure.arcgis_rest_client import ArcGisRestClient
-from gadata.infrastructure.dataset_cache import DatasetCache
-from gadata.infrastructure.feature_mapper import (
+from austrata.application import fetch_boreholes as bh_uc
+from austrata.application import fetch_hydrogeology as hy_uc
+from austrata.domain.borehole import Borehole, BoreholeCollection
+from austrata.domain.region import Region
+from austrata.infrastructure.arcgis_rest_client import ArcGisRestClient
+from austrata.infrastructure.dataset_cache import DatasetCache
+from austrata.infrastructure.feature_mapper import (
     distribute_earth_material,
     distribute_stratigraphy,
     gdf_to_borehole_collection,
     gdf_to_records,
 )
-from gadata.infrastructure.http import HttpClient
-from gadata.infrastructure.ogc_wfs_client import OgcWfsClient
+from austrata.infrastructure.http import HttpClient
+from austrata.infrastructure.ogc_wfs_client import OgcWfsClient
 
-logger = logging.getLogger("gadata.client")
+logger = logging.getLogger("austrata.client")
 
 BBox = Tuple[float, float, float, float]
 _PROVENANCE_ATTR = "gadata_provenance"

@@ -3,7 +3,7 @@ requires = ["setuptools>=65", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "gadata"
+name = "austrata"
 version = "0.1.0"
 description = "Access Geoscience Australia borehole and hydrogeology data with a provenance-aware local cache"
 readme = "README.md"
@@ -55,12 +55,12 @@ dev = [
 ]
 
 [project.urls]
-Repository = "https://github.com/g-adopt/gadata"
-Issues = "https://github.com/g-adopt/gadata/issues"
+Repository = "https://github.com/g-adopt/austrata"
+Issues = "https://github.com/g-adopt/austrata/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["gadata*"]
+include = ["austrata*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

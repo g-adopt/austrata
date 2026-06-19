@@ -19,8 +19,8 @@ import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from gadata import GADataClient, NGISClient
-from gadata.infrastructure.ngis_sources import get_source
+from austrata import GADataClient, NGISClient
+from austrata.infrastructure.ngis_sources import get_source
 
 OUT = Path(__file__).parent
 AUS_NATIONAL_BBOX = (112.0, -44.0, 154.0, -9.0)  # mainland + Tasmania

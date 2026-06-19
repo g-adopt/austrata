@@ -5,7 +5,7 @@ import pytest
 import requests
 import responses
 
-from gadata.infrastructure.http import HttpClient, RetryableHTTPError
+from austrata.infrastructure.http import HttpClient, RetryableHTTPError
 
 URL = "https://example.test/endpoint"
 

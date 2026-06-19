@@ -19,14 +19,14 @@ from typing import List, Optional, Sequence, Tuple
 
 from shapely.geometry.base import BaseGeometry
 
-from gadata.client import GADataClient
-from gadata.domain.borehole import Borehole, BoreholeCollection
-from gadata.domain.region import Region
-from gadata.infrastructure.http import HttpClient
-from gadata.infrastructure.ngis_sources import ngis_states_intersecting
-from gadata.ngis_client import NGISClient
+from austrata.client import GADataClient
+from austrata.domain.borehole import Borehole, BoreholeCollection
+from austrata.domain.region import Region
+from austrata.infrastructure.http import HttpClient
+from austrata.infrastructure.ngis_sources import ngis_states_intersecting
+from austrata.ngis_client import NGISClient
 
-logger = logging.getLogger("gadata.groundwater")
+logger = logging.getLogger("austrata.groundwater")
 
 BBox = Tuple[float, float, float, float]
 

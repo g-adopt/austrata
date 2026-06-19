@@ -17,12 +17,12 @@ from typing import Dict, List, Optional
 
 import geopandas as gpd
 
-from gadata.domain.borehole import Borehole, BoreholeCollection
-from gadata.domain.construction import ConstructionInterval
-from gadata.domain.region import Region
-from gadata.domain.stratigraphy import EarthMaterialInterval, StratigraphyInterval
-from gadata.domain.coercion import to_float as _f
-from gadata.domain.coercion import to_str as _s
+from austrata.domain.borehole import Borehole, BoreholeCollection
+from austrata.domain.construction import ConstructionInterval
+from austrata.domain.region import Region
+from austrata.domain.stratigraphy import EarthMaterialInterval, StratigraphyInterval
+from austrata.domain.coercion import to_float as _f
+from austrata.domain.coercion import to_str as _s
 
 _JOIN = "HydroCode"
 #: Optimiser-added columns to drop from the raw bag (logs strip lon/lat too).

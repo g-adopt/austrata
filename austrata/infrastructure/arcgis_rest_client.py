@@ -22,10 +22,10 @@ import json
 import logging
 from typing import List, Optional
 
-from gadata.domain.region import Region
-from gadata.infrastructure.http import HttpClient
+from austrata.domain.region import Region
+from austrata.infrastructure.http import HttpClient
 
-logger = logging.getLogger("gadata.arcgis")
+logger = logging.getLogger("austrata.arcgis")
 
 HYDRO_BASE_URL = (
     "https://services.ga.gov.au/gis/rest/services/"
@@ -36,7 +36,7 @@ GDA94 = 4283
 
 
 class ArcGisRestClient:
-    """Adapter implementing :class:`~gadata.ports.data_source.HydrogeologySource`."""
+    """Adapter implementing :class:`~austrata.ports.data_source.HydrogeologySource`."""
 
     def __init__(
         self,

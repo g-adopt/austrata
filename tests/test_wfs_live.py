@@ -6,8 +6,8 @@ and two known ENOs return stratigraphy/earth-material features.
 """
 import pytest
 
-from gadata.domain.region import Region
-from gadata.infrastructure.ogc_wfs_client import OgcWfsClient
+from austrata.domain.region import Region
+from austrata.infrastructure.ogc_wfs_client import OgcWfsClient
 
 pytestmark = pytest.mark.live
 

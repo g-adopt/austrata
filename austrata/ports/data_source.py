@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from typing import Iterable, List, Optional, Protocol, runtime_checkable
 
-from gadata.domain.region import Region
+from austrata.domain.region import Region
 
 
 @runtime_checkable

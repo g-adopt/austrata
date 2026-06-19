@@ -1,7 +1,7 @@
 """The 5 boreholes with stratigraphy logs in the Lower Murrumbidgee domain.
 
 Prints each hole's downhole sequence and exports a tidy table (one row per
-interval) to GeoPackage + CSV using gadata's public log-export helper,
+interval) to GeoPackage + CSV using austrata's public log-export helper,
 ``BoreholeCollection.stratigraphy_geodataframe()``.
 
 Run:  ~/Workplace/python3.12/bin/python3.12 examples/lower_murrumbidgee_stratigraphy.py
@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from gadata import GADataClient
+from austrata import GADataClient
 from lower_murrumbidgee_boreholes import build_regions
 
 OUT = Path(__file__).parent

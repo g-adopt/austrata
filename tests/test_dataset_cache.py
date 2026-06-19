@@ -5,7 +5,7 @@ import geopandas as gpd
 import pytest
 from shapely.geometry import Point
 
-from gadata.infrastructure.dataset_cache import (
+from austrata.infrastructure.dataset_cache import (
     CACHE_FORMAT_VERSION,
     DatasetCache,
     FetchPlan,
@@ -233,7 +233,7 @@ def test_list_info_clear(tmp_path):
 
 
 def test_env_var_overrides_cache_dir(tmp_path, monkeypatch):
-    monkeypatch.setenv("GADATA_DATA_DIR", str(tmp_path / "envcache"))
+    monkeypatch.setenv("AUSTRATA_DATA_DIR", str(tmp_path / "envcache"))
     cache = DatasetCache()
     cache.put(KEY, _gdf(), {})
     assert (tmp_path / "envcache" / f"{KEY}.parquet").exists()

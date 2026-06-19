@@ -10,8 +10,8 @@ import pandas as pd
 import pytest
 from fiona.crs import CRS
 
-from gadata.infrastructure import ngis_optimiser, ngis_sources
-from gadata.infrastructure.ngis_optimiser import (
+from austrata.infrastructure import ngis_optimiser, ngis_sources
+from austrata.infrastructure.ngis_optimiser import (
     OPTIMISER_VERSION,
     build_stamp,
     optimise_state,

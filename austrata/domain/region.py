@@ -13,7 +13,7 @@ services impose so callers and the application layer never see them:
   (round coordinates, normalise, deterministic WKT) before hashing so that
   numerically-equal-but-textually-different geometries hash identically.
 
-Everything here is GDA94 geographic (EPSG:4283), the lon/lat contract gadata
+Everything here is GDA94 geographic (EPSG:4283), the lon/lat contract austrata
 returns end to end; there is no reprojection.
 """
 from __future__ import annotations

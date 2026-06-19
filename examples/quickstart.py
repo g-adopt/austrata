@@ -1,4 +1,4 @@
-"""gadata quickstart — a tour of what the package can do.
+"""austrata quickstart — a tour of what the package can do.
 
 Run it directly to see each feature against the live Geoscience Australia
 services::
@@ -15,7 +15,7 @@ import tempfile
 
 from shapely.geometry import Polygon
 
-from gadata import GADataClient, hydrogeology_citation
+from austrata import GADataClient, hydrogeology_citation
 
 # Reference region (ACT/Canberra), lon/lat in GDA94 (EPSG:4283).
 ACT_BBOX = (148.9, -35.6, 149.3, -35.1)
@@ -35,9 +35,9 @@ def main() -> None:
     # ------------------------------------------------------------------
     section("1. Construct the client")
     # cache_dir defaults to the OS user cache dir (override with cache_dir= or
-    # the GADATA_DATA_DIR env var). offline=True serves only from cache. Here we
+    # the AUSTRATA_DATA_DIR env var). offline=True serves only from cache. Here we
     # use a throwaway dir so the demo never touches your real cache.
-    ga = GADataClient(cache_dir=tempfile.mkdtemp(prefix="gadata-demo-"))
+    ga = GADataClient(cache_dir=tempfile.mkdtemp(prefix="austrata-demo-"))
     print(f"client ready; cache at {ga.cache.cache_dir}")
 
     # ------------------------------------------------------------------

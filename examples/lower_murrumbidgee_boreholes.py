@@ -1,9 +1,9 @@
 """Find Geoscience Australia boreholes over the Lower Murrumbidgee MODFLOW domain.
 
 The OMEGA mesh for this demo lives in a *local metric frame* (metres, arbitrary
-(0,0) origin) — see omega/demos/lower_murrumbidgee/full_modflow_domain.md. gadata
+(0,0) origin) — see omega/demos/lower_murrumbidgee/full_modflow_domain.md. austrata
 queries in lon/lat (EPSG:4283), so we first georeference the local frame to
-geographic using the fit documented in that note, then ask gadata how many
+geographic using the fit documented in that note, then ask austrata how many
 boreholes fall in the region.
 
 Two regions are reported:
@@ -21,7 +21,7 @@ from __future__ import annotations
 
 from shapely.geometry import Polygon
 
-from gadata import GADataClient
+from austrata import GADataClient
 
 # --- georeference: local full-grid frame (metres) -> lon/lat (EPSG:4283) ------
 ORIGIN_LON = 143.01       # deg E at full-grid local X = 0 (SW corner)
@@ -70,7 +70,7 @@ def main() -> None:
     print(f"Boreholes in the FULL 330 x 210 km grid frame: {n_full}")
 
     # Pull the headers once (paginated + cached), then clip to the active outline.
-    # gadata's spatial filter uses the polygon's bounding box, so we clip the
+    # austrata's spatial filter uses the polygon's bounding box, so we clip the
     # active-alluvium count exactly with a shapely 'within' test locally.
     bores = ga.boreholes(region=full_poly)
     gdf = bores.to_geodataframe()

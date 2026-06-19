@@ -36,10 +36,10 @@ top/base elevations, which the GA WFS lacks regionally.
   `StratigraphyInterval` / `EarthMaterialInterval` (`top_elev_m_ahd`,
   `bottom_elev_m_ahd`), read from `INTERVAL_BEGIN/END_ELEV_M_AHD`; exports gained
   the columns. GA leaves them null; NGIS will fill them.
-- ✅ `gadata/infrastructure/ngis_sources.py` — pinned registry: per state, the
+- ✅ `austrata/infrastructure/ngis_sources.py` — pinned registry: per state, the
   data.gov.au resource URL + landing page, the public mirror URL, expected zip
   size + md5, the `.gdb` path inside the archive, vintage, and citation.
-- ✅ All three cores mirrored to `s3://gadopt/gadata/ngis/` (public-read; verified
+- ✅ All three cores mirrored to `s3://gadopt/austrata/ngis/` (public-read; verified
   the credential-free HTTPS URL serves byte-for-byte).
 - ✅ Confirmed fiona reads the gdbs and `TopElev`/`BottomElev` are populated.
 

@@ -8,15 +8,15 @@ import fiona
 import pytest
 from fiona.crs import CRS
 
-from gadata.application.fetch_ngis import (
+from austrata.application.fetch_ngis import (
     NGIS_LAYERS,
     expected_fingerprint,
     load_ngis_frames,
     ngis_cache_key,
 )
-from gadata.infrastructure import ngis_optimiser, ngis_sources
-from gadata.infrastructure.dataset_cache import DatasetCache
-from gadata.infrastructure.ngis_optimiser import (
+from austrata.infrastructure import ngis_optimiser, ngis_sources
+from austrata.infrastructure.dataset_cache import DatasetCache
+from austrata.infrastructure.ngis_optimiser import (
     OPTIMISER_VERSION,
     build_stamp,
     optimise_state,

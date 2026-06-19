@@ -1,5 +1,5 @@
 """Pure/offline unit tests for the NGIS-only ConstructionInterval object."""
-from gadata.domain.construction import ConstructionInterval
+from austrata.domain.construction import ConstructionInterval
 
 # GA-shaped (UPPERCASE) keys, as the NGIS optimiser emits them.
 CONSTRUCTION_FEATURE = {

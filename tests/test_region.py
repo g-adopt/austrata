@@ -2,7 +2,7 @@
 import pytest
 from shapely.geometry import Polygon, box
 
-from gadata.domain.region import Region
+from austrata.domain.region import Region
 
 
 def test_wfs_bbox_format_and_crs_suffix():

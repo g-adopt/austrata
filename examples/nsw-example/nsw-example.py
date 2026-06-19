@@ -7,7 +7,7 @@ query the whole state by handing NGISClient the registered NSW extent as the
 box, then load each log kind and export tidy one-row-per-interval tables.
 
 The first run downloads and optimises the NSW gdb once (a few minutes, several
-hundred MB under GADATA_NGIS_DIR); every run after that filters the cached fast
+hundred MB under AUSTRATA_NGIS_DIR); every run after that filters the cached fast
 DB in memory, offline.
 
 Run:  ~/Workplace/python3.12/bin/python3.12 examples/nsw-example/nsw-example.py
@@ -16,8 +16,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from gadata import NGISClient
-from gadata.infrastructure.ngis_sources import get_source
+from austrata import NGISClient
+from austrata.infrastructure.ngis_sources import get_source
 
 OUT = Path(__file__).parent
 

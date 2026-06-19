@@ -4,9 +4,9 @@ from urllib.parse import parse_qs, urlparse
 
 import responses
 
-from gadata.domain.region import Region
-from gadata.infrastructure.arcgis_rest_client import ArcGisRestClient
-from gadata.infrastructure.http import HttpClient
+from austrata.domain.region import Region
+from austrata.infrastructure.arcgis_rest_client import ArcGisRestClient
+from austrata.infrastructure.http import HttpClient
 
 QUERY_URL = (
     "https://services.ga.gov.au/gis/rest/services/"

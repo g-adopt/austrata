@@ -4,9 +4,9 @@ import json
 import pytest
 import responses
 
-from gadata.domain.region import Region
-from gadata.infrastructure.http import HttpClient
-from gadata.infrastructure.ogc_wfs_client import OgcWfsClient
+from austrata.domain.region import Region
+from austrata.infrastructure.http import HttpClient
+from austrata.infrastructure.ogc_wfs_client import OgcWfsClient
 
 BASE = "https://services.ga.gov.au/gis/boreholes/wfs"
 

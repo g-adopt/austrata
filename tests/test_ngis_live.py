@@ -1,6 +1,6 @@
 """Live NGIS health tests — knowing when the NGIS data goes unavailable.
 
-These hit the real **upstream** NGIS artifacts, not gadata: for each state core
+These hit the real **upstream** NGIS artifacts, not austrata: for each state core
 they check that the data.gov.au primary download AND our S3 mirror are reachable
 and the right size, so we learn early when a custodian reissues/truncates the file
 or when our fallback mirror breaks. Like the GA live suite they are gated by the
@@ -21,8 +21,8 @@ from __future__ import annotations
 
 import pytest
 
-from gadata.infrastructure.http import HttpClient
-from gadata.infrastructure.ngis_sources import NGIS_SOURCES, NGIS_STATES, get_source
+from austrata.infrastructure.http import HttpClient
+from austrata.infrastructure.ngis_sources import NGIS_SOURCES, NGIS_STATES, get_source
 
 pytestmark = pytest.mark.live
 
@@ -123,7 +123,7 @@ def test_ngis_qld_end_to_end(tmp_path):
     NGISClient.boreholes(bbox) -> load_logs, asserting EPSG:4283 bores and at
     least one stratigraphy interval with a populated AHD elevation.
     """
-    from gadata.ngis_client import NGISClient
+    from austrata.ngis_client import NGISClient
 
     ngis = NGISClient(ngis_dir=tmp_path / "ngis", cache_dir=tmp_path / "cache")
     # A small box over SE Queensland (Brisbane/Lockyer) known to hold bores.
@@ -146,7 +146,7 @@ def test_ngis_qld_end_to_end(tmp_path):
 @pytest.mark.heavy
 def test_ngis_federated_qld_end_to_end(tmp_path):
     """The federated GroundwaterClient returns GA + NGIS:QLD over a real box."""
-    from gadata.groundwater_client import GroundwaterClient
+    from austrata.groundwater_client import GroundwaterClient
 
     gw = GroundwaterClient(cache_dir=tmp_path / "cache", ngis_dir=tmp_path / "ngis")
     bbox = (152.0, -28.0, 152.6, -27.4)

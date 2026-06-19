@@ -1,9 +1,9 @@
-# gadata
+# austrata
 
 Access Geoscience Australia borehole and hydrogeology data through their open
 OGC/ArcGIS web services, with a provenance-aware local cache.
 
-`gadata` models boreholes as first-class objects (a header plus downhole
+`austrata` models boreholes as first-class objects (a header plus downhole
 stratigraphy and earth-material logs), lets you pull every bore inside an
 arbitrary polygon or bounding box, and exposes the Hydrogeology of Australia
 polygon layer to overlay. It talks to two backends behind one API: the GA
@@ -27,7 +27,7 @@ pyogrio, pyarrow, requests, tenacity, platformdirs, and filelock.
 ## Quickstart
 
 ```python
-from gadata import GADataClient
+from austrata import GADataClient
 from shapely.geometry import box
 
 ga = GADataClient()                      # cache defaults to the OS user cache dir
@@ -78,10 +78,10 @@ n_units = ga.hydrogeology(bbox=(148.9, -35.6, 149.3, -35.1), count_only=True)
 
 Each logical query is cached as a `<hash>.parquet` file plus an entry in a
 `manifest.json`, in an OS-appropriate user cache directory
-(e.g. `~/Library/Caches/gadata` on macOS). Override the location with the
-`cache_dir=` argument or the `GADATA_DATA_DIR` environment variable.
+(e.g. `~/Library/Caches/austrata` on macOS). Override the location with the
+`cache_dir=` argument or the `AUSTRATA_DATA_DIR` environment variable.
 
-On a repeat query `gadata` revalidates rather than blindly refetching: the
+On a repeat query `austrata` revalidates rather than blindly refetching: the
 ArcGIS path uses the service `ETag` (conditional `If-None-Match`), and the WFS
 path — which exposes no ETag — compares the `numberMatched` count as a cheap
 fingerprint. Both fall back to a max-age TTL (30 days by default), so a
@@ -104,20 +104,20 @@ they land in the cache and an `offline=True` client serves them thereafter.
 
 ### Citing the data
 
-Geoscience Australia publishes this data under CC BY 4.0. `gadata` records the
+Geoscience Australia publishes this data under CC BY 4.0. `austrata` records the
 provenance of every cached query so you can cite it with its access date:
 
 ```python
 print(bores.citation())                  # citation string incl. "Accessed YYYY-MM-DD"
 bores.provenance()                        # dict: source_url, license, fetched_at, ...
 
-from gadata import hydrogeology_citation
+from austrata import hydrogeology_citation
 print(hydrogeology_citation(hydro))
 ```
 
 ## The lon/lat (GDA94) contract
 
-Both services are native EPSG:4283 (GDA94 geographic). `gadata` pins this end to
+Both services are native EPSG:4283 (GDA94 geographic). `austrata` pins this end to
 end: the WFS bbox carries an explicit `EPSG:4283` suffix, and ArcGIS queries
 force `outSR=4283` (its GeoJSON otherwise silently defaults to WGS84). Every
 geometry you get back is lon/lat in GDA94 — no reprojection happens here.

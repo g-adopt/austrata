@@ -12,7 +12,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
-from gadata.domain.coercion import to_str as _to_str
+from austrata.domain.coercion import to_str as _to_str
 
 
 @dataclass(frozen=True)

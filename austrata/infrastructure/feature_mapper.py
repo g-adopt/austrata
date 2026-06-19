@@ -16,9 +16,9 @@ from typing import List, Optional
 import geopandas as gpd
 from shapely.geometry import Point, shape
 
-from gadata.domain.borehole import Borehole, BoreholeCollection
-from gadata.domain.region import Region
-from gadata.domain.stratigraphy import EarthMaterialInterval, StratigraphyInterval
+from austrata.domain.borehole import Borehole, BoreholeCollection
+from austrata.domain.region import Region
+from austrata.domain.stratigraphy import EarthMaterialInterval, StratigraphyInterval
 
 GDA94 = "EPSG:4283"
 

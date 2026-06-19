@@ -1,8 +1,8 @@
 """Live end-to-end tests for GADataClient (run with ``-m live``)."""
 import pytest
 
-from gadata.client import GADataClient
-from gadata.domain.borehole import BoreholeCollection
+from austrata.client import GADataClient
+from austrata.domain.borehole import BoreholeCollection
 
 pytestmark = pytest.mark.live
 

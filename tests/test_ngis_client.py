@@ -9,15 +9,15 @@ import pytest
 from fiona.crs import CRS
 from shapely.geometry import Point
 
-from gadata.domain.region import Region
-from gadata.infrastructure import ngis_download, ngis_sources
-from gadata.infrastructure.ngis_mapper import (
+from austrata.domain.region import Region
+from austrata.infrastructure import ngis_download, ngis_sources
+from austrata.infrastructure.ngis_mapper import (
     ngis_bores_to_collection,
     ngis_construction,
     ngis_earth_material,
     ngis_stratigraphy,
 )
-from gadata.ngis_client import NGISClient
+from austrata.ngis_client import NGISClient
 
 _ALBERS = CRS.from_epsg(3577)
 # Two bores: GW1 inside the test box, GW2 outside it.

@@ -31,14 +31,14 @@ from tenacity import (
     wait_exponential,
 )
 
-logger = logging.getLogger("gadata.http")
+logger = logging.getLogger("austrata.http")
 
 #: Status codes worth retrying — all transient. 400/404 are deliberately absent.
 RETRYABLE_STATUS = frozenset({429, 502, 503, 504})
 
 DEFAULT_USER_AGENT = (
-    "gadata/0.1 (Geoscience Australia data client; "
-    "+https://github.com/g-adopt/gadata; contact: gadata-maintainers)"
+    "austrata/0.1 (Geoscience Australia data client; "
+    "+https://github.com/g-adopt/austrata; contact: austrata-maintainers)"
 )
 
 

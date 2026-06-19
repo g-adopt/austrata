@@ -1,7 +1,7 @@
 """Shared constants and helpers for the live GA-server health/contract tests.
 
 These tests verify the *upstream* Geoscience Australia services — reachability,
-advertised capabilities, schema, CRS, and that real data downloads — not gadata
+advertised capabilities, schema, CRS, and that real data downloads — not austrata
 itself. A failure means the GA service drifted or went down. They are polite:
 small counts, the shared HttpClient politeness delay, a descriptive User-Agent.
 """
@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import requests
 
-from gadata.infrastructure.http import HttpClient
+from austrata.infrastructure.http import HttpClient
 
 WFS_BASE = "https://services.ga.gov.au/gis/boreholes/wfs"
 HYDRO_BASE = (

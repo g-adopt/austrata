@@ -15,8 +15,8 @@ import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from gadata import NGISClient
-from gadata.infrastructure.ngis_sources import get_source
+from austrata import NGISClient
+from austrata.infrastructure.ngis_sources import get_source
 
 OUT = Path(__file__).parent
 

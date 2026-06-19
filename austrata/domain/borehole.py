@@ -18,15 +18,15 @@ from typing import TYPE_CHECKING, Iterator, List, Optional
 
 from shapely.geometry import Point
 
-from gadata.domain.coercion import to_float as _to_float
-from gadata.domain.coercion import to_str as _to_str
+from austrata.domain.coercion import to_float as _to_float
+from austrata.domain.coercion import to_str as _to_str
 
 if TYPE_CHECKING:  # avoid importing geopandas at domain import time
     from geopandas import GeoDataFrame
 
-    from gadata.domain.construction import ConstructionInterval
-    from gadata.domain.region import Region
-    from gadata.domain.stratigraphy import EarthMaterialInterval, StratigraphyInterval
+    from austrata.domain.construction import ConstructionInterval
+    from austrata.domain.region import Region
+    from austrata.domain.stratigraphy import EarthMaterialInterval, StratigraphyInterval
 
 
 @dataclass
@@ -407,7 +407,7 @@ class BoreholeCollection:
     def load_logs(self, kind: str = "stratigraphy", **kwargs) -> None:
         """Bulk-load downhole logs for every borehole in the collection.
 
-        Delegates to a loader injected by :class:`~gadata.client.GADataClient`
+        Delegates to a loader injected by :class:`~austrata.client.GADataClient`
         (which collects ``self.enos``, fetches the ENO-set log pull through the
         cache, and distributes intervals onto each :class:`Borehole` by ENO). A
         collection built outside the client has no loader and raises.

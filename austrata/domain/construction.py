@@ -3,7 +3,7 @@
 Construction logs (screens / casing) have no Geoscience Australia WFS equivalent,
 so this object is populated only from the NGIS ``NGIS_ConstructionLog`` table. It
 shares the depth contract and the null/invalid-interval policy of the
-stratigraphy and earth-material intervals (see :mod:`gadata.domain.stratigraphy`):
+stratigraphy and earth-material intervals (see :mod:`austrata.domain.stratigraphy`):
 depths are metres below the depth reference point, ``top`` shallower than
 ``bottom``, and ``from_feature`` never raises — it flags ``valid``/
 ``invalid_reason`` instead.
@@ -17,9 +17,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional
 
-from gadata.domain.coercion import to_float as _to_float
-from gadata.domain.coercion import to_str as _to_str
-from gadata.domain.stratigraphy import _check_interval
+from austrata.domain.coercion import to_float as _to_float
+from austrata.domain.coercion import to_str as _to_str
+from austrata.domain.stratigraphy import _check_interval
 
 
 @dataclass(frozen=True)

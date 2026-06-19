@@ -21,10 +21,10 @@ import logging
 import re
 from typing import Iterable, List, Optional
 
-from gadata.domain.region import Region
-from gadata.infrastructure.http import HttpClient
+from austrata.domain.region import Region
+from austrata.infrastructure.http import HttpClient
 
-logger = logging.getLogger("gadata.wfs")
+logger = logging.getLogger("austrata.wfs")
 
 WFS_BASE_URL = "https://services.ga.gov.au/gis/boreholes/wfs"
 
@@ -37,7 +37,7 @@ _NUMBER_MATCHED_RE = re.compile(r'numberMatched=["\'](\d+)["\']')
 
 
 class OgcWfsClient:
-    """Adapter implementing :class:`~gadata.ports.data_source.BoreholeSource`."""
+    """Adapter implementing :class:`~austrata.ports.data_source.BoreholeSource`."""
 
     def __init__(
         self,
