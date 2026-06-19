@@ -6,14 +6,23 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20756406.svg)](https://doi.org/10.5281/zenodo.20756406)
 
-Access Geoscience Australia borehole and hydrogeology data through their open
-OGC/ArcGIS web services, with a provenance-aware local cache.
+Access Australian borehole, stratigraphy, and hydrogeology data through open
+government web services and state groundwater cores, with a provenance-aware
+local cache.
 
 `austrata` models boreholes as first-class objects (a header plus downhole
-stratigraphy and earth-material logs), lets you pull every bore inside an
-arbitrary polygon or bounding box, and exposes the Hydrogeology of Australia
-polygon layer to overlay. It talks to two backends behind one API: the GA
-boreholes GeoServer (WFS) and the Hydrogeology of Australia ArcGIS MapServer.
+stratigraphy, earth-material, and construction logs), lets you pull every bore
+inside an arbitrary polygon or bounding box, and exposes the Hydrogeology of
+Australia polygon layer to overlay.
+
+It draws on two complementary borehole sources behind one API. The national
+Geoscience Australia services — the boreholes GeoServer (WFS) and the
+Hydrogeology of Australia ArcGIS MapServer — give continent-wide coverage. The
+Bureau of Meteorology NGIS state cores (NSW, VIC, QLD) add a much denser local
+source, with the per-interval AHD elevations and screen/casing construction logs
+the national WFS lacks. A federated `GroundwaterClient` queries Geoscience
+Australia and the relevant state cores together.
+
 Results are cached locally as GeoParquet with a provenance manifest, and
 revalidated before refetching so repeated queries are cheap and reproducible.
 
@@ -24,11 +33,13 @@ and mesh generation are deliberately out of scope — those live in the companio
 ## Installation
 
 ```bash
-pip install -e ".[dev]"
+pip install austrata
 ```
 
 Requires Python 3.11+. Runtime dependencies are geopandas, shapely, pyproj,
-pyogrio, pyarrow, requests, tenacity, platformdirs, and filelock.
+pyogrio, fiona, pyarrow, requests, tenacity, platformdirs, filelock, and tqdm.
+For a development checkout, `pip install -e ".[dev]"` adds the test, lint, and
+type-check tooling.
 
 ## Quickstart
 
@@ -70,6 +81,35 @@ hydro = ga.hydrogeology(bbox=(148.9, -35.6, 149.3, -35.1))
 diamond = ga.boreholes(bbox=(148.9, -35.6, 149.3, -35.1), filter="drillingMethod='Diamond'")
 ```
 
+### State cores (NGIS) and federated queries
+
+For NSW, VIC, and QLD the Bureau of Meteorology NGIS state cores are a much
+denser source. `GroundwaterClient` federates Geoscience Australia and every state
+core whose extent intersects your query, returning one collection where each bore
+is tagged with its `.source`:
+
+```python
+from austrata import GroundwaterClient
+
+gw = GroundwaterClient()
+bores = gw.boreholes(bbox=(146.0, -35.5, 146.5, -35.0))   # a NSW box
+print(len(bores), "boreholes from", {b.source for b in bores})
+
+# NGIS carries dense stratigraphy plus screen/casing construction logs (NGIS-only).
+bores.load_logs("stratigraphy")
+bores.load_logs("construction")
+strat = bores.stratigraphy_geodataframe()   # one row per interval, with a 'source' column
+
+# Restrict the backends: "GA", "NGIS" (all intersecting), "NGIS:NSW", or a bare "NSW".
+nsw_only = gw.boreholes(bbox=(146.0, -35.5, 146.5, -35.0), sources="NGIS:NSW")
+```
+
+The first query against a state core downloads and optimises its geodatabase
+once (several hundred MB to a few GB, with a progress bar) into a local fast
+store; every query after that filters it in memory, offline. The raw cores live
+under `AUSTRATA_NGIS_DIR`, separate from the query cache. Use `NGISClient`
+directly if you want a single state core without the GA federation.
+
 ### Dry-run counts
 
 Pass `count_only=True` to get the number of features without downloading them
@@ -110,8 +150,9 @@ they land in the cache and an `offline=True` client serves them thereafter.
 
 ### Citing the data
 
-Geoscience Australia publishes this data under CC BY 4.0. `austrata` records the
-provenance of every cached query so you can cite it with its access date:
+Each source publishes its data under CC BY 4.0. `austrata` records the provenance
+of every cached query — per source for a federated collection — so you can cite
+it with its access date:
 
 ```python
 print(bores.citation())                  # citation string incl. "Accessed YYYY-MM-DD"
@@ -134,14 +175,19 @@ The package follows clean-architecture / DDD layering:
 
 - `domain/` — pure value objects and entities (`Region`, `Borehole`,
   `BoreholeCollection`, `StratigraphyInterval`, `EarthMaterialInterval`,
-  `HydrogeologyUnit`). No I/O.
+  `ConstructionInterval`, `HydrogeologyUnit`). No I/O.
 - `ports/` — the interfaces the application layer depends on (`BoreholeSource`,
   `HydrogeologySource`, `DatasetCache`).
 - `application/` — use cases that build per-backend cache fetch-plans.
 - `infrastructure/` — the HTTP client, the WFS and ArcGIS adapters, the feature
-  mappers, and the dataset cache.
-- `client.py` — the `GADataClient` facade that wires it together.
+  mappers, the dataset cache, and the NGIS pipeline (download, optimise,
+  fast-store, mapper).
+- `client.py` / `ngis_client.py` / `groundwater_client.py` — the `GADataClient`,
+  `NGISClient`, and federated `GroundwaterClient` facades that wire it together.
 
 ## License
 
-MIT (the code). The data accessed through it is © Geoscience Australia, CC BY 4.0.
+MIT (the code). The Geoscience Australia borehole and hydrogeology data is
+© Geoscience Australia (CC BY 4.0); the NGIS state cores are © the Bureau of
+Meteorology and the contributing state agencies (CC BY 4.0). `austrata` records
+each source's provenance and citation on every query.
