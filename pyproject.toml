@@ -36,6 +36,7 @@ dependencies = [
     "shapely>=2.0",
     "pyproj>=3.5",
     "pyogrio>=0.7",
+    "fiona>=1.9",
     "pyarrow>=14.0",
     "requests>=2.28",
     "tenacity>=8.2",
