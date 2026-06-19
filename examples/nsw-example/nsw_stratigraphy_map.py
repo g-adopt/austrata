@@ -4,7 +4,7 @@ Plots the ~10k NSW NGIS bores with named stratigraphy over the faint backdrop of
 all NSW bores, coloured by how many stratigraphy intervals each hole logs (a
 proxy for how richly it profiles the section). Writes a PNG next to this script.
 
-Run:  ~/Workplace/python3.12/bin/python3.12 examples/nsw-example/nsw_stratigraphy_map.py
+Run:  python examples/nsw-example/nsw_stratigraphy_map.py
 """
 from __future__ import annotations
 

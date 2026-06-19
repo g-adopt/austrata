@@ -6,7 +6,7 @@ local state cores via NGISClient; GA comes from the national WFS via GADataClien
 coastline + state borders (cartopy / Natural Earth) and overlays the source's
 bores, colouring the ones with stratigraphy by interval count.
 
-Run:  ~/Workplace/python3.12/bin/python3.12 examples/nsw-example/stratigraphy_map.py <SOURCE>
+Run:  python examples/nsw-example/stratigraphy_map.py <SOURCE>
       where SOURCE is NSW | VIC | QLD | GA   (default NSW)
 """
 from __future__ import annotations

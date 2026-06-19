@@ -3,7 +3,7 @@
 Run it directly to see each feature against the live Geoscience Australia
 services::
 
-    ~/Workplace/python3.12/bin/python3.12 examples/quickstart.py
+    python examples/quickstart.py
 
 Every network call is guarded under ``if __name__ == "__main__"``, so importing
 this module does nothing. A small ACT/Canberra bounding box and a small polygon

@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use austrata in your work, please cite it using these metadata."
+title: austrata
+abstract: >-
+  A Python package for accessing Geoscience Australia open data (boreholes via
+  GeoServer OGC WFS and the Hydrogeology of Australia via ArcGIS REST) and the
+  Bureau of Meteorology NGIS state cores, with a provenance-aware local cache.
+type: software
+authors:
+  - family-names: Ghelichkhan
+    given-names: Sia
+    email: siavash.ghelichkhan@anu.edu.au
+    website: "https://sia-g.com"
+repository-code: "https://github.com/g-adopt/austrata"
+url: "https://github.com/g-adopt/austrata"
+license: MIT
+version: 0.1.0
+keywords:
+  - geoscience australia
+  - boreholes
+  - hydrogeology
+  - stratigraphy
+  - geospatial
+# After the first release to Zenodo, add the minted DOI and release date here:
+#   doi: 10.5281/zenodo.XXXXXXX
+#   date-released: YYYY-MM-DD

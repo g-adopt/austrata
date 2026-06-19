@@ -29,6 +29,15 @@ examples/**/*.gpkg
 examples/**/*.csv
 examples/**/*.h5
 examples/**/*.png
+# Rasters and ParaView/VTK outputs produced by the example scripts
+examples/**/*.tif
+examples/**/*.tiff
+examples/**/*.pvd
+examples/**/*.vtu
+examples/**/*.vtp
+examples/**/*.vtk
+# ...but keep the small ABSUC reference layout the state-strata example documents
+!examples/ABSUC_sample.csv
 
 # Editor / OS
 .vscode/

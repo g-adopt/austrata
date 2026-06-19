@@ -20,12 +20,13 @@ keywords = [
     "geospatial",
 ]
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering",
     "Topic :: Scientific/Engineering :: GIS",
 ]
@@ -40,6 +41,7 @@ dependencies = [
     "tenacity>=8.2",
     "platformdirs>=3.0",
     "filelock>=3.12",
+    "tqdm>=4.64",
 ]
 
 [project.optional-dependencies]
@@ -61,6 +63,9 @@ Issues = "https://github.com/g-adopt/austrata/issues"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["austrata*"]
+
+[tool.setuptools.package-data]
+austrata = ["py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

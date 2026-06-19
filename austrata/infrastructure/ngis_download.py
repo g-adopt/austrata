@@ -24,11 +24,13 @@ from __future__ import annotations
 import hashlib
 import logging
 import os
+import sys
 import zipfile
 from pathlib import Path
 from typing import List, Optional, Tuple
 
 from platformdirs import user_cache_dir
+from tqdm.auto import tqdm
 
 from austrata.infrastructure.http import HttpClient
 from austrata.infrastructure.ngis_sources import NgisSource, get_source
@@ -40,6 +42,17 @@ _ENV_DIR = "AUSTRATA_NGIS_DIR"
 
 #: Streaming read block size for download + checksum (1 MiB).
 _BLOCK = 1 << 20
+
+#: Env var to force the download progress bar off (e.g. in scripts/CI logs).
+_ENV_NO_PROGRESS = "AUSTRATA_NO_PROGRESS"
+
+
+def _progress_disabled() -> bool:
+    """The cores are multi-GB, so show a bar on a real terminal; stay quiet
+    when piped/redirected (CI logs) or when explicitly disabled."""
+    if os.environ.get(_ENV_NO_PROGRESS):
+        return True
+    return not sys.stderr.isatty()
 
 
 def resolve_ngis_dir(ngis_dir: Optional[os.PathLike | str] = None) -> Path:
@@ -96,7 +109,8 @@ def _download_verified(source: NgisSource, dest: Path, http: HttpClient) -> None
     errors: List[str] = []
     for label, url in (("data.gov.au", source.resource_url), ("mirror", source.mirror_url)):
         try:
-            size, md5 = _stream_to_file(http, url, dest)
+            desc = f"NGIS {source.state} ({label})"
+            size, md5 = _stream_to_file(http, url, dest, total=source.zip_bytes, desc=desc)
         except Exception as exc:  # network/IO error: try the next source
             logger.warning("NGIS %s: %s download failed: %s", source.state, label, exc)
             errors.append(f"{label}: {exc}")
@@ -115,12 +129,21 @@ def _download_verified(source: NgisSource, dest: Path, http: HttpClient) -> None
     )
 
 
-def _stream_to_file(http: HttpClient, url: str, dest: Path) -> Tuple[int, str]:
+def _stream_to_file(
+    http: HttpClient,
+    url: str,
+    dest: Path,
+    *,
+    total: Optional[int] = None,
+    desc: Optional[str] = None,
+) -> Tuple[int, str]:
     """Stream ``url`` to ``<dest>.partial`` then atomically promote it.
 
     Goes through the :class:`HttpClient` session so the download inherits the
     polite ``User-Agent``; streams so a multi-GB core never lands in memory.
-    Returns the written ``(size_bytes, md5_hex)``.
+    Shows a tqdm byte-progress bar (sized from ``total`` or the response
+    ``Content-Length``) so a long download is visible on a terminal. Returns the
+    written ``(size_bytes, md5_hex)``.
     """
     partial = dest.with_suffix(dest.suffix + ".partial")
     md5 = hashlib.md5()
@@ -128,13 +151,24 @@ def _stream_to_file(http: HttpClient, url: str, dest: Path) -> Tuple[int, str]:
     try:
         resp = http.session.get(url, stream=True, timeout=(http.connect_timeout, http.read_timeout))
         resp.raise_for_status()
-        with open(partial, "wb") as fh:
+        bar_total = total or _content_length(resp)
+        bar = tqdm(
+            total=bar_total,
+            desc=desc,
+            unit="B",
+            unit_scale=True,
+            unit_divisor=1024,
+            disable=_progress_disabled(),
+            leave=False,
+        )
+        with open(partial, "wb") as fh, bar:
             for chunk in resp.iter_content(chunk_size=_BLOCK):
                 if not chunk:
                     continue
                 fh.write(chunk)
                 md5.update(chunk)
                 size += len(chunk)
+                bar.update(len(chunk))
             fh.flush()
             os.fsync(fh.fileno())
         os.replace(partial, dest)
@@ -142,6 +176,17 @@ def _stream_to_file(http: HttpClient, url: str, dest: Path) -> Tuple[int, str]:
         if partial.exists():
             partial.unlink()
     return size, md5.hexdigest()
+
+
+def _content_length(resp) -> Optional[int]:
+    """Parse a ``Content-Length`` header into an int, or ``None`` if absent/bad."""
+    raw = resp.headers.get("Content-Length")
+    if raw is None:
+        return None
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        return None
 
 
 def _verify(source: NgisSource, size: int, md5: str) -> Tuple[bool, Optional[str]]:

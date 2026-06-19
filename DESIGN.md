@@ -1,32 +1,11 @@
-# austrata — project guide
+# austrata — design
 
-Python package for accessing **Geoscience Australia (GA)** open data: boreholes
-(GeoServer OGC WFS) and Hydrogeology of Australia (ArcGIS REST). It is a pure
-**data-access + caching** layer. It returns geopandas GeoDataFrames and domain
-objects, always in **lon/lat EPSG:4283 (GDA94 geographic)**. Downstream packages
-do the rest: **omega** owns meshing/projection; an **interpolation** layer (not
-built yet) will consume these domain objects in parallel.
-
-Repo: https://github.com/g-adopt/austrata (public). Design rationale lives in
-`DESIGN.md`; the NGIS integration in `NGIS_IMPLEMENTATION_PLAN.md`. Live-server
-health is covered by the `tests/test_*_live.py` modules and the nightly workflow.
-
-## Environment & commands
-
-Always use the project Python at `~/Workplace/python3.12`.
-
-```bash
-~/Workplace/python3.12/bin/pip install -e ".[dev]"      # editable install
-~/Workplace/python3.12/bin/python3.12 -m pytest -q                       # offline unit tests (no network)
-~/Workplace/python3.12/bin/python3.12 -m pytest -q -m "live and smoke"   # fast GA-server health (~15 checks)
-~/Workplace/python3.12/bin/python3.12 -m pytest -q -m "live and contract"# fuller GA schema/data contract
-~/Workplace/python3.12/bin/python3.12 -m pytest -q -m live               # all live tests
-~/Workplace/python3.12/bin/python3.12 -m flake8 austrata tests             # lint (line-length 120)
-~/Workplace/python3.12/bin/python3.12 -m mypy austrata                     # type check (must stay clean)
-```
-
-Default `pytest` excludes anything marked `live` (those hit the real GA
-servers). Markers: `live`, `smoke`, `contract`, `heavy` (heavy = on-demand only).
+`austrata` is a pure **data-access + caching** layer over **Geoscience Australia
+(GA)** open data (boreholes via GeoServer OGC WFS, Hydrogeology of Australia via
+ArcGIS REST) and the Bureau of Meteorology **NGIS** state cores. It returns
+geopandas GeoDataFrames and domain objects, always in **lon/lat EPSG:4283 (GDA94
+geographic)**. Map projection and meshing are deliberately out of scope — they
+live in the companion `omega` package, which consumes this one.
 
 ## Public API
 
@@ -36,6 +15,7 @@ servers). Markers: `live`, `smoke`, `contract`, `heavy` (heavy = on-demand only)
 ga = GADataClient(cache_dir=None, *, offline=False, max_age=None,
                   http=None, wfs=None, arcgis=None, cache=None)
 ```
+
 All collaborators are injectable for testing; defaults are constructed otherwise.
 `cache_dir` defaults to the OS user cache (`platformdirs`), overridable via the
 `AUSTRATA_DATA_DIR` env var. `offline=True` serves only from cache (raises if
@@ -199,9 +179,10 @@ GeoParquet) that every box query then filters in memory — milliseconds, offlin
   and the geographic `extent` (derived from the real gdb bore bounds) used for
   routing. `get_source(state)`, `NGIS_STATES`, `ngis_states_intersecting(box)`.
 - **`ngis_download.ensure_gdb(state)`** — **local-first**, else streams the zip
-  (data.gov.au primary → S3 mirror fallback), **verifies size + md5** against the
-  registry (the **remote↔gdb contract** — an unverified archive is never trusted),
-  extracts. `AUSTRATA_NGIS_DIR` overrides where raw gdbs live.
+  (data.gov.au primary → S3 mirror fallback) with a progress bar, **verifies size +
+  md5** against the registry (the **remote↔gdb contract** — an unverified archive
+  is never trusted), extracts. `AUSTRATA_NGIS_DIR` overrides where raw gdbs live;
+  `AUSTRATA_NO_PROGRESS` silences the download bar.
 - **`ngis_optimiser.optimise_state(gdb, state)`** — one fiona pass (pyogrio raises
   on these gdbs) reading `NGIS_Bore` + the three log layers **verbatim** (every
   original column; no GA-key renaming), building a lon/lat Point from the
@@ -241,8 +222,8 @@ GeoParquet) that every box query then filters in memory — milliseconds, offlin
   **`outSR=4283`** (else silent WGS84/4326). ArcGIS `maxRecordCount`=2000.
 - Depths: `INTERVAL_BEGIN_M`/`INTERVAL_END_M` (metres, down from the depth ref
   point); `DEPTH_REF_POINT_ELEV_M_AHD` in m AHD. Per-interval
-  `INTERVAL_BEGIN/END_ELEV_M_AHD` are now modelled (`top/bottom_elev_m_ahd`) —
-  usually null on GA, populated by NGIS.
+  `INTERVAL_BEGIN/END_ELEV_M_AHD` are modelled (`top/bottom_elev_m_ahd`) — usually
+  null on GA, populated by NGIS.
 
 ## Verified NGIS facts (gotchas baked into the code)
 
@@ -259,93 +240,3 @@ GeoParquet) that every box query then filters in memory — milliseconds, offlin
   "unknown formation"`); a depth problem takes precedence in the reason. Read
   lon/lat from the `Longitude`/`Latitude` attributes; the projected Albers `SHAPE`
   (EPSG:3577) is discarded. Only NSW/VIC/QLD exist as standalone cores.
-
-## Testing & monitoring
-
-- Offline unit tests mock HTTP with `responses` and use `tmp_path` caches; the
-  NGIS offline tests write a **real synthetic `.gdb`** with fiona (no network, no
-  3 GB) so the reader/optimiser/mapper/federation are exercised for real.
-- Live tests (`tests/test_*_live.py`, `tests/test_ga_server_live.py`,
-  `tests/test_ngis_live.py`) hit the real servers, gated by the `live` marker.
-- `.github/workflows/nightly-ga-health.yml` runs the **smoke** subset nightly
-  (~02:00 AEST) and the **contract** subset weekly, uploading reports (`set -o
-  pipefail`). The nightly smoke now also HEADs each NGIS state's data.gov.au
-  primary **and** S3 mirror and checks the size, so a custodian reissue/truncation
-  or a broken mirror surfaces early (size check is best-effort; the md5 verify in
-  `ensure_gdb` is the real integrity guard). The NGIS heavy end-to-end (downloads
-  the QLD core) is on-demand only.
-
-## Conventions & deferred work
-
-- Python ≥3.11; flat `austrata/` package layout; flake8/black line-length 120; keep `mypy austrata` clean.
-- Files under ~200 lines, functions focused; clean-architecture dependency rule.
-- **Deferred (do not build without asking):** the interpolation layer (would
-  consume these domain objects to build 3D layer surfaces); spatially-sorted fast-DB
-  parquet for predicate pushdown (a future NGIS optimisation, not needed at current
-  state sizes).
-- Commits: author as Sia Ghelichkhan, no AI attribution.
-
-## Status & session log (last updated 2026-06-18)
-
-**Package state: complete and in use.** Pushed to https://github.com/g-adopt/austrata
-(public, `main`). Tests green (offline unit + live smoke/contract), flake8 + mypy
-clean. Nightly smoke + weekly contract GitHub Actions are wired and were proven
-green in CI. The build was done in reviewed increments (scaffold → adapters →
-cache → facade → docs → live health suite → flatten layout → log-export IO).
-
-**NGIS integration (2026-06-18):** shipped the second borehole source — the BoM
-NGIS state cores (NSW/VIC/QLD) — and the federated `GroundwaterClient`, built and
-reviewed in eight increments (domain `source`/raw-bag + `ConstructionInterval` →
-`ensure_gdb` download/verify → `optimise_state` fast-DB → `fetch_ngis` stamp gate →
-`ngis_mapper` + `NGISClient` → `GroundwaterClient` federation → live primary+mirror
-smoke + nightly wiring → docs). Each increment passed all three gates (offline
-pytest, `mypy austrata`, flake8) and an adversarial review. The plan/record lives in
-`NGIS_IMPLEMENTATION_PLAN.md`; the field mapping and download sources in
-`data/ngis/NGIS_SCHEMA.md`. NGIS is now the dense in-package source for the Lower
-Murrumbidgee work below (the GA-too-sparse finding still stands for GA's WFS).
-
-**Log-export IO (added last):** `BoreholeCollection.stratigraphy_geodataframe()`
-and `earth_material_geodataframe()` return tidy one-row-per-interval GeoDataFrames
-(EPSG:4283, borehole point geometry). Call `load_logs(kind)` first (they raise
-otherwise); empty → typed empty frame. Save via geopandas (`.to_file`, `.to_csv`).
-
-### Active application: Lower Murrumbidgee groundwater mesh (for omega)
-
-We are sourcing borehole/stratigraphy data to help build an OMEGA mesh of the
-**Lower Murrumbidgee MODFLOW domain** (CSIRO/SKM 2010; 3 aquifer layers —
-Shepparton Fm / Calivil Fm / Renmark Group). The domain spec and georeference are
-in `~/Workplace/omega/demos/lower_murrumbidgee/full_modflow_domain.md`. The OMEGA
-mesh uses a **local metric frame** (metres, arbitrary (0,0) origin); we
-georeference it to lon/lat (austrata's required CRS) using that note's fit:
-SW corner at **143.01°E, −35.76°** = local (0,0); **~91,800 m/° lon**,
-**~110,170 m/° lat**. Full grid = 330 × 210 km. Worked scripts live in
-`examples/lower_murrumbidgee_*.py`.
-
-**Key finding — GA open data is too sparse here for the aquifer geometry:**
-- 226 GA boreholes in the full grid (38 inside the active alluvium outline).
-- **Stratigraphy logs: only 5 holes / 23 intervals.** Just **Jerilderie 1**
-  (ENO 12391) logs all three model formations (Shepparton/Calivil/Renmark) in one
-  column to 1.3 km; **Killendoo 1** (ENO 12599) has Renmark; the other 3 are
-  basement granite picks. Note Jerilderie 1's intervals **overlap** (multiple
-  logging schemes nested at the same depths) — filter to named-formation
-  intervals before use.
-- **Earth-material logs: 51 holes / 137 intervals, but mostly useless here** —
-  ~129 are shallow (<1 m) regolith samples from a National Geochemical Survey
-  campaign ("Catchment outlet sediment", holes named `2007190xxx`), plus a few
-  deep basement rock/exploration samples. They do **not** profile the aquifer fill.
-- **Conclusion:** GA's national WFS is a sparse regional supplement. The dense
-  layer-pick data for this model lives in the **NSW DCCEEW Water / CSIRO–SKM
-  MODFLOW input decks** (and likely the `elevation_data.csv`/`bedrock_data.csv`
-  already under `~/Workplace/gw_demos`). Use GA's Jerilderie 1 as a validation
-  tie-point, not as the primary layer constraint.
-
-### Where to resume
-
-- The interpolation layer (parallel to the data layer) is still **deferred** —
-  it would consume these domain objects to build 3D layer surfaces.
-- If continuing with GA data: consider pulling a wider buffer or the other GA log
-  layers (construction/NVCL), and modelling the per-interval AHD elevation fields.
-- The real next move for the mesh is obtaining the NSW/CSIRO bore data, not more
-  GA queries.
-- A standing offer was left open: a final adversarial Opus code review of the
-  whole implementation before building omega on top.

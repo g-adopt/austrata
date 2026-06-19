@@ -10,7 +10,7 @@ The first run downloads and optimises the NSW gdb once (a few minutes, several
 hundred MB under AUSTRATA_NGIS_DIR); every run after that filters the cached fast
 DB in memory, offline.
 
-Run:  ~/Workplace/python3.12/bin/python3.12 examples/nsw-example/nsw-example.py
+Run:  python examples/nsw-example/nsw-example.py
 """
 from __future__ import annotations
 

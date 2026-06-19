@@ -202,4 +202,4 @@ a free-text `comment` field to `StratigraphyInterval` to keep NGIS `Comment`.
 4. domain `source` tag on `Borehole` (+ `source` column in exports).
 5. `GroundwaterClient` — federated box query across GA + intersecting NGIS states.
 6. tests — offline (tiny synthetic gdb fixture) + live smoke (urls reachable).
-7. docs — fold the data.gov.au URL list into `NGIS_SCHEMA.md`; update `CLAUDE.md`.
+7. docs — fold the data.gov.au URL list into `NGIS_SCHEMA.md`; update `DESIGN.md`.
