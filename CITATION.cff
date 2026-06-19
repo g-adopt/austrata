@@ -13,14 +13,13 @@ authors:
     website: "https://sia-g.com"
 repository-code: "https://github.com/g-adopt/austrata"
 url: "https://github.com/g-adopt/austrata"
+doi: 10.5281/zenodo.20756406
 license: MIT
 version: 0.1.0
+date-released: "2026-06-19"
 keywords:
   - geoscience australia
   - boreholes
   - hydrogeology
   - stratigraphy
   - geospatial
-# After the first release to Zenodo, add the minted DOI and release date here:
-#   doi: 10.5281/zenodo.XXXXXXX
-#   date-released: YYYY-MM-DD

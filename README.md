@@ -4,6 +4,7 @@
 [![PyPI](https://img.shields.io/pypi/v/austrata.svg)](https://pypi.org/project/austrata/)
 [![Python](https://img.shields.io/pypi/pyversions/austrata.svg)](https://pypi.org/project/austrata/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20756406.svg)](https://doi.org/10.5281/zenodo.20756406)
 
 Access Geoscience Australia borehole and hydrogeology data through their open
 OGC/ArcGIS web services, with a provenance-aware local cache.
