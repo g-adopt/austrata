@@ -61,4 +61,4 @@ Please ask before building these — they are intentionally not here yet:
   layer surfaces (it belongs alongside the data layer, parallel to it).
 - Spatially-sorted fast-DB parquet for predicate pushdown — a future NGIS
   optimisation not needed at current state sizes.
-- Map projection and meshing, which live in the companion `omega` package.
+- Map projection and meshing, which live in the companion `gomega` package.

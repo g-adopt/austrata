@@ -28,7 +28,7 @@ revalidated before refetching so repeated queries are cheap and reproducible.
 
 Everything is returned in lon/lat (EPSG:4283, GDA94 geographic). Map projection
 and mesh generation are deliberately out of scope — those live in the companion
-`omega` package, which consumes this one.
+`gomega` package, which consumes this one.
 
 ## Installation
 
